@@ -28,6 +28,6 @@ export class UsersService {
   }
 
   async getByEmail(email: string) {
-    return await this.userRepo.findOne({ email });
+    return await this.userRepo.findOne({ email }, { relations: ['roles'] });
   }
 }

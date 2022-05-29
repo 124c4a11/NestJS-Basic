@@ -47,9 +47,9 @@ export class AuthService {
   }
 
   private generateToken(user: User) {
-    const { id, email, password } = user;
+    const { id, email, roles } = user;
 
-    return { token: this.jwtService.sign({ id, email, password }) };
+    return { token: this.jwtService.sign({ id, email, roles }) };
   }
 
   private async getValidUser(dto: CreateUserDto) {
