@@ -4,6 +4,7 @@ import { RolesService } from 'src/roles/roles.service';
 import { UserRoles } from 'src/types/user-roles';
 import { Repository } from 'typeorm';
 import { AssignRoleDto } from './dto/assign-role.dto';
+import { BanUserDto } from './dto/ban-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 
@@ -58,5 +59,20 @@ export class UsersService {
         HttpStatus.NOT_FOUND,
       );
     }
+  }
+
+  async ban(dto: BanUserDto) {
+    const user = await this.userRepo.findOne({ where: { id: dto.userId } });
+
+    if (!user) {
+      throw new HttpException('The user is not found!', HttpStatus.NOT_FOUND);
+    }
+
+    user.banned = true;
+    user.banReason = dto.banReason;
+
+    await this.userRepo.save(user);
+
+    return user;
   }
 }
